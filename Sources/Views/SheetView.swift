@@ -62,7 +62,7 @@ final class SheetView: View {
             .clamped(13...)
 
         titleLabel = UILabel(
-            font: SystemFonts.Static.bold(30),
+            font: SystemFonts.bold(30),
             textColor: SystemColors.Label.primary,
             numberOfLines: 0,
             textAlignment: .natural
