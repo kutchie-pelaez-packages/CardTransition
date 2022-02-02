@@ -9,8 +9,11 @@ public final class CardDismissingInteractiveAnimator:
 {
 
     private var transitionContext: UIViewControllerContextTransitioning?
+
+    weak var presentationController: CardPresentationController?
     weak var presentingViewController: UIViewController?
     weak var presentedViewController: UIViewController?
+
     weak var scrollView: UIScrollView? {
         didSet {
             panGesture?.addAction { [weak self] in
@@ -31,8 +34,8 @@ public final class CardDismissingInteractiveAnimator:
             .first
     }
 
-    private var cardDelegate: CardViewControllerCompatible? {
-        presentedViewController as? CardViewControllerCompatible
+    private var cardPresentationControllerDelegate: CardPresentationControllerDelegate? {
+        presentedViewController as? CardPresentationControllerDelegate
     }
 
     // MARK: -
@@ -41,7 +44,11 @@ public final class CardDismissingInteractiveAnimator:
         guard
             let scrollView = scrollView,
             let card = card,
-            cardDelegate?.cardCanCloseInteractive == true
+            let presentationController = presentationController,
+            cardPresentationControllerDelegate?.cardPresentationController(
+                presentationController,
+                shouldDismissBy: .gesture
+            ) == true
         else {
             return
         }
@@ -68,9 +75,17 @@ public final class CardDismissingInteractiveAnimator:
 
             if percentComplete == .zero  {
                 presentedViewController?.dismiss(animated: true) { [weak self] in
-                    guard self?.transitionContext?.transitionWasCancelled == false else { return }
+                    guard
+                        self?.transitionContext?.transitionWasCancelled == false,
+                        let presentationController = self?.presentationController
+                    else {
+                        return
+                    }
 
-                    self?.cardDelegate?.cardDidCloseInteractive()
+                    self?.cardPresentationControllerDelegate?.cardPresentationController(
+                        presentationController,
+                        didDismissBy: .gesture
+                    )
                 }
             }
 
@@ -110,7 +125,15 @@ public final class CardDismissingInteractiveAnimator:
     public func scrollViewShouldScrollToTop(_ scrollView: UIScrollView) -> Bool { false }
 
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        guard cardDelegate?.cardCanCloseInteractive == true else { return }
+        guard
+            let presentationController = presentationController,
+            cardPresentationControllerDelegate?.cardPresentationController(
+                presentationController,
+                shouldDismissBy: .gesture
+            ) == true
+        else {
+            return
+        }
         
         if scrollView.contentOffset.y < .zero {
             scrollView.contentOffset.y = .zero

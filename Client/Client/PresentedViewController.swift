@@ -1,8 +1,9 @@
 import CardTransition
 import CoreUI
+import Core
 import UIKit
 
-final class PresentedViewController: ViewController, CardViewControllerCompatible {
+final class PresentedViewController: ViewController, CardPresentationControllerDelegate {
     private var rectangle: UIView!
     private var leadingInsetIndicator: UIView!
     private var trailingInsetIndicator: UIView!
@@ -10,8 +11,6 @@ final class PresentedViewController: ViewController, CardViewControllerCompatibl
     private var bottomInsetIndicator: UIView!
 
     override func configureViews() {
-        view.backgroundColor = SystemColors.Background.primary
-
         rectangle = UIView()
         rectangle.backgroundColor = SystemColors.Tint.primary
         view.addSubviews(rectangle)
@@ -35,7 +34,7 @@ final class PresentedViewController: ViewController, CardViewControllerCompatibl
 
     override func constraintViews() {
         rectangle.snp.makeConstraints { make in
-            make.height.equalTo(100)
+            make.height.equalTo(rectangle.snp.width)
             make.top.bottom.equalToSuperview().inset(16)
             make.leading.trailing.equalToSuperview().inset(32)
         }
@@ -78,25 +77,37 @@ final class PresentedViewController: ViewController, CardViewControllerCompatibl
         )
     }
 
-    // MARK: - CardViewControllerCompatible
+    // MARK: - CardPresentationControllerDelegate
 
-    var cardCanCloseByButton: Bool { true }
+    func cardPresentationControllerTitle(_ cardPresentationController: CardPresentationController) -> String? {
+        "Card Title"
+    }
 
-    var cardCanCloseInteractive: Bool { true }
+    func cardPresentationController(_ cardPresentationController: CardPresentationController, shouldDismissBy reason: CardDismissingReason) -> Bool {
+        switch reason {
+        case .closeButton:
+            return true
 
-    func cardDidCloseByButton() {
-        print("Will close by button")
-
-        dismiss(animated: true) {
-            print("Did close by button")
+        case .gesture:
+            return true
         }
     }
 
-    func cardDidCloseInteractive() {
-        print("Will close interactively")
+    func cardPresentationController(_ cardPresentationController: CardPresentationController, didDismissBy reason: CardDismissingReason) {
+        switch reason {
+        case .closeButton:
+            print("Will close by button")
 
-        dismiss(animated: true) {
-            print("Did close interactively")
+            dismiss(animated: true) {
+                print("Did close by button")
+            }
+
+        case .gesture:
+            print("Will close by gesture")
+
+            dismiss(animated: true) {
+                print("Did close by gesture")
+            }
         }
     }
 }

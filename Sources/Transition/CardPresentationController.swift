@@ -8,6 +8,7 @@ let cardEdgeInset: Double = 6
 public final class CardPresentationController: UIPresentationController {
     public func link(_ dismissingInteractiveAnimator: CardDismissingInteractiveAnimator) {
         self.dismissingInteractiveAnimator = dismissingInteractiveAnimator
+        dismissingInteractiveAnimator.presentationController = self
         dismissingInteractiveAnimator.presentingViewController = presentingViewController
         dismissingInteractiveAnimator.presentedViewController = presentedViewController
     }
@@ -44,7 +45,8 @@ public final class CardPresentationController: UIPresentationController {
 
         card = CardView(
             style: cardStyle,
-            cardDelegate: cardDelegate
+            presentationController: self,
+            cardPresentationControllerDelegate: cardPresentationControllerDelegate
         )
         contentView.addSubviews(card)
 
@@ -91,8 +93,8 @@ public final class CardPresentationController: UIPresentationController {
         presentedViewController.view
     }
 
-    private var cardDelegate: CardViewControllerCompatible? {
-        presentedViewController as? CardViewControllerCompatible
+    private var cardPresentationControllerDelegate: CardPresentationControllerDelegate? {
+        presentedViewController as? CardPresentationControllerDelegate
     }
 
     private func setPercentCompleteToShadeView(_ percentComplete: Double) {
@@ -120,9 +122,6 @@ public final class CardPresentationController: UIPresentationController {
     }
 
     private func updateCardItemIfPossible() {
-        if let viewController = presentedViewController as? ViewController {
-            viewController.updateCardItem()
-        }
         containerView?.layoutIfNeeded()
         scrollView.transform = CGAffineTransform(
             translationX: 0,
