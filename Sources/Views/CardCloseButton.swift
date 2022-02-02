@@ -8,13 +8,13 @@ private enum Symbols: Symbol {
     case xmarkCircleFill
 }
 
-final class SheetCloseButton: Button {
-    init(style: SheetView.Style) {
+final class CardCloseButton: Button {
+    init(style: CardView.Style) {
         self.style = style
         super.init()
     }
 
-    private let style: SheetView.Style
+    private let style: CardView.Style
 
     // MARK: - UI
 

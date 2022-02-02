@@ -1,7 +1,7 @@
 import CoreUI
 import UIKit
 
-public final class SheetScrollExtender: View {
+public final class CardScrollExtender: View {
     private weak var scrollView: UIScrollView?
 
     public func link(_ scrollView: UIScrollView) {
@@ -12,7 +12,7 @@ public final class SheetScrollExtender: View {
         guard
             let scrollView = scrollView,
             let contentView = scrollView.subviews.last,
-            let sheet = contentView.subviews.first
+            let card = contentView.subviews.first
         else {
             return super.hitTest(
                 point,
@@ -20,19 +20,19 @@ public final class SheetScrollExtender: View {
             )
         }
 
-        let contertedSheetFrame = contentView.convert(sheet.frame, to: self)
-        let isInSheet = contertedSheetFrame.contains(point)
+        let contertedCardFrame = contentView.convert(card.frame, to: self)
+        let isInCard = contertedCardFrame.contains(point)
         let isInScrollView = scrollView.frame.contains(point)
 
         if
-            isInSheet &&
+            isInCard &&
             isInScrollView
         {
             return super.hitTest(
                 point,
                 with: event
             )
-        } else if isInSheet {
+        } else if isInCard {
             return scrollView
         } else if isInScrollView {
             return nil

@@ -9,7 +9,7 @@ private let titleTopInset: Double = 28
 private let labelToCloseButtonInset: Double = 8
 private let labelToContentViewInset: Double = 8
 
-private func closeButtonEdgeInset(for style: SheetView.Style) -> Double {
+private func closeButtonEdgeInset(for style: CardView.Style) -> Double {
     switch style {
     case .default:
         return 2
@@ -19,7 +19,7 @@ private func closeButtonEdgeInset(for style: SheetView.Style) -> Double {
     }
 }
 
-final class SheetView: View {
+final class CardView: View {
     enum Style {
         case `default`
         case large
@@ -27,19 +27,19 @@ final class SheetView: View {
 
     init(
         style: Style,
-        sheetDelegate: SheetViewControllerCompatible?
+        cardDelegate: CardViewControllerCompatible?
     ) {
         self.style = style
-        self.sheetDelegate = sheetDelegate
+        self.cardDelegate = cardDelegate
         super.init()
     }
 
     private let style: Style
-    private weak var sheetDelegate: SheetViewControllerCompatible?
+    private weak var cardDelegate: CardViewControllerCompatible?
 
     private var contentTopConstraint: Constraint?
 
-    var item: SheetItem! {
+    var item: CardItem! {
         didSet {
             itemDidUpdate()
         }
@@ -69,17 +69,17 @@ final class SheetView: View {
         )
         super.addSubview(titleLabel)
 
-        closeButton = SheetCloseButton(style: style)
+        closeButton = CardCloseButton(style: style)
         closeButton.setContentCompressionResistancePriority(.required, for: .horizontal)
         closeButton.addAction { [weak self] in
-            self?.sheetDelegate?.sheetDidCloseByButton()
+            self?.cardDelegate?.cardDidCloseByButton()
         }
         super.addSubview(closeButton)
 
         contentView = UIView()
         super.addSubview(contentView)
 
-        item = SheetItem()
+        item = CardItem()
     }
 
     override func constraintViews() {
@@ -87,7 +87,7 @@ final class SheetView: View {
 
         if
             item.title != nil &&
-            sheetDelegate?.sheetCanCloseByButton == true
+            cardDelegate?.cardCanCloseByButton == true
         {
             titleLabel.snp.remakeConstraints { make in
                 make.leading.equalToSuperview().inset(titleLeadingInset)
@@ -137,7 +137,7 @@ final class SheetView: View {
         titleLabel.text = item.title
         titleLabel.isVisible = item.title != nil
 
-        closeButton.isVisible = sheetDelegate?.sheetCanCloseByButton == true
+        closeButton.isVisible = cardDelegate?.cardCanCloseByButton == true
 
         setNeedsUpdateConstraints()
     }

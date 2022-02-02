@@ -4,17 +4,17 @@ import UIKit
 private var presentingDuration: TimeInterval { .milliseconds(225) }
 private var dismissingDuration: TimeInterval { .milliseconds(200) }
 
-public final class SheetAnimator:
+public final class CardAnimator:
     NSObject,
     UIViewControllerAnimatedTransitioning
 {
 
-    public init(direction: SheetTransitionDirection) {
+    public init(direction: CardTransitionDirection) {
         self.direction = direction
         super.init()
     }
 
-    private let direction: SheetTransitionDirection
+    private let direction: CardTransitionDirection
 
     // MARK: -
 
@@ -46,7 +46,7 @@ public final class SheetAnimator:
                 case .dismissing:
                     presentedView.transform = CGAffineTransform(
                         translationX: 0,
-                        y: presentedView.frame.height + sheetEdgeInset
+                        y: presentedView.frame.height + cardEdgeInset
                     )
                 }
             }

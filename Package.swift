@@ -3,15 +3,15 @@
 import PackageDescription
 
 let package = Package(
-    name: "SheetTransition",
+    name: "CardTransition",
     platforms: [
         .iOS("15")
     ],
     products: [
         .library(
-            name: "SheetTransition",
+            name: "CardTransition",
             targets: [
-                "SheetTransition"
+                "CardTransition"
             ]
         )
     ],
@@ -23,7 +23,7 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "SheetTransition",
+            name: "CardTransition",
             dependencies: [
                 .product(name: "Core", package: "Core"),
                 .product(name: "CoreUI", package: "CoreUI"),

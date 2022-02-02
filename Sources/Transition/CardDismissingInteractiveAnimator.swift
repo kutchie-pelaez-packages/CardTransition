@@ -3,7 +3,7 @@ import UIKit
 private let velocityThreshold: Double = 300
 private let percentCompleteThreshold: Double = 0.5
 
-public final class SheetDismissingInteractiveAnimator:
+public final class CardDismissingInteractiveAnimator:
     UIPercentDrivenInteractiveTransition,
     UIScrollViewDelegate
 {
@@ -21,7 +21,7 @@ public final class SheetDismissingInteractiveAnimator:
         }
     }
 
-    private var sheet: UIView? {
+    private var card: UIView? {
         scrollView?.subviews.last?.subviews.first
     }
 
@@ -31,8 +31,8 @@ public final class SheetDismissingInteractiveAnimator:
             .first
     }
 
-    private var sheetDelegate: SheetViewControllerCompatible? {
-        presentedViewController as? SheetViewControllerCompatible
+    private var cardDelegate: CardViewControllerCompatible? {
+        presentedViewController as? CardViewControllerCompatible
     }
 
     // MARK: -
@@ -40,8 +40,8 @@ public final class SheetDismissingInteractiveAnimator:
     private func handleDismissingPanGesture(_ pan: UIPanGestureRecognizer) {
         guard
             let scrollView = scrollView,
-            let sheet = sheet,
-            sheetDelegate?.sheetCanCloseInteractive == true
+            let card = card,
+            cardDelegate?.cardCanCloseInteractive == true
         else {
             return
         }
@@ -49,8 +49,8 @@ public final class SheetDismissingInteractiveAnimator:
         let translation = pan.translation(in: scrollView).y
         let velocity = pan.velocity(in: scrollView).y
 
-        let sheetHeight = sheet.frame.height
-        let maxTranslation = sheetHeight + sheetEdgeInset
+        let cardHeight = card.frame.height
+        let maxTranslation = cardHeight + cardEdgeInset
         let offset = scrollView.contentOffset.y
         let percentTranslated = translation / maxTranslation
 
@@ -70,7 +70,7 @@ public final class SheetDismissingInteractiveAnimator:
                 presentedViewController?.dismiss(animated: true) { [weak self] in
                     guard self?.transitionContext?.transitionWasCancelled == false else { return }
 
-                    self?.sheetDelegate?.sheetDidCloseInteractive()
+                    self?.cardDelegate?.cardDidCloseInteractive()
                 }
             }
 
@@ -110,7 +110,7 @@ public final class SheetDismissingInteractiveAnimator:
     public func scrollViewShouldScrollToTop(_ scrollView: UIScrollView) -> Bool { false }
 
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        guard sheetDelegate?.sheetCanCloseInteractive == true else { return }
+        guard cardDelegate?.cardCanCloseInteractive == true else { return }
         
         if scrollView.contentOffset.y < .zero {
             scrollView.contentOffset.y = .zero

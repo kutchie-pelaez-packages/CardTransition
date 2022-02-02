@@ -2,7 +2,7 @@ import Core
 import CoreUI
 import UIKit
 
-final class SheetShadeView: View {
+final class CardShadeView: View {
     @Clamped(0...1)
     var percentComplete: Double = 0 {
         didSet {

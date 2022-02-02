@@ -3,30 +3,30 @@ import CoreUI
 import DeviceKit
 import UIKit
 
-let sheetEdgeInset: Double = 6
+let cardEdgeInset: Double = 6
 
-public final class SheetPresentationController: UIPresentationController {
-    public func link(_ dismissingInteractiveAnimator: SheetDismissingInteractiveAnimator) {
+public final class CardPresentationController: UIPresentationController {
+    public func link(_ dismissingInteractiveAnimator: CardDismissingInteractiveAnimator) {
         self.dismissingInteractiveAnimator = dismissingInteractiveAnimator
         dismissingInteractiveAnimator.presentingViewController = presentingViewController
         dismissingInteractiveAnimator.presentedViewController = presentedViewController
     }
 
-    private weak var dismissingInteractiveAnimator: SheetDismissingInteractiveAnimator?
+    private weak var dismissingInteractiveAnimator: CardDismissingInteractiveAnimator?
 
     // MARK: - UI
 
-    private var shade: SheetShadeView!
-    private var extender: SheetScrollExtender!
+    private var shade: CardShadeView!
+    private var extender: CardScrollExtender!
     private var scrollView: UIScrollView!
     private var contentView: UIView!
-    private var sheet: SheetView!
+    private var card: CardView!
 
     private func configureViews() {
-        shade = SheetShadeView()
+        shade = CardShadeView()
         containerView?.addSubviews(shade)
 
-        extender = SheetScrollExtender()
+        extender = CardScrollExtender()
         containerView?.addSubviews(extender)
 
         scrollView = UIScrollView()
@@ -42,14 +42,14 @@ public final class SheetPresentationController: UIPresentationController {
         contentView = UIView()
         scrollView.addSubview(contentView)
 
-        sheet = SheetView(
-            style: sheetStyle,
-            sheetDelegate: sheetDelegate
+        card = CardView(
+            style: cardStyle,
+            cardDelegate: cardDelegate
         )
-        contentView.addSubviews(sheet)
+        contentView.addSubviews(card)
 
         subjectView?.translatesAutoresizingMaskIntoConstraints = false
-        sheet.addSubviews(subjectView)
+        card.addSubviews(subjectView)
     }
 
     private func snapViews() {
@@ -62,7 +62,7 @@ public final class SheetPresentationController: UIPresentationController {
         }
 
         scrollView.snp.makeConstraints { make in
-            make.bottom.leading.trailing.equalToSuperview().inset(sheetEdgeInset)
+            make.bottom.leading.trailing.equalToSuperview().inset(cardEdgeInset)
         }
 
         contentView.snp.makeConstraints { make in
@@ -71,7 +71,7 @@ public final class SheetPresentationController: UIPresentationController {
             make.height.equalToSuperview()
         }
 
-        sheet.snp.makeConstraints { make in
+        card.snp.makeConstraints { make in
             make.bottom.leading.trailing.equalToSuperview()
             make.height.equalTo(scrollView)
         }
@@ -83,7 +83,7 @@ public final class SheetPresentationController: UIPresentationController {
 
     // MARK: -
 
-    private var sheetStyle: SheetView.Style {
+    private var cardStyle: CardView.Style {
         Device.current.hasSensorHousing ? .large : .default
     }
 
@@ -91,8 +91,8 @@ public final class SheetPresentationController: UIPresentationController {
         presentedViewController.view
     }
 
-    private var sheetDelegate: SheetViewControllerCompatible? {
-        presentedViewController as? SheetViewControllerCompatible
+    private var cardDelegate: CardViewControllerCompatible? {
+        presentedViewController as? CardViewControllerCompatible
     }
 
     private func setPercentCompleteToShadeView(_ percentComplete: Double) {
@@ -119,14 +119,14 @@ public final class SheetPresentationController: UIPresentationController {
         snapViews()
     }
 
-    private func updateSheetItemIfPossible() {
+    private func updateCardItemIfPossible() {
         if let viewController = presentedViewController as? ViewController {
-            viewController.updateSheetItem()
+            viewController.updateCardItem()
         }
         containerView?.layoutIfNeeded()
         scrollView.transform = CGAffineTransform(
             translationX: 0,
-            y: scrollView.frame.height + sheetEdgeInset
+            y: scrollView.frame.height + cardEdgeInset
         )
     }
 
@@ -143,7 +143,7 @@ public final class SheetPresentationController: UIPresentationController {
         super.presentationTransitionWillBegin()
 
         setupSelf()
-        updateSheetItemIfPossible()
+        updateCardItemIfPossible()
         setupInteractiveAnimatorBeforePresenting()
         setPercentCompleteToShadeView(1)
     }
