@@ -13,15 +13,17 @@
 		2C196E4A27AA9573002F7113 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C196E4927AA9573002F7113 /* main.swift */; };
 		2C196E4C27AA95AA002F7113 /* Application.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C196E4B27AA95AA002F7113 /* Application.swift */; };
 		2C30AA8927AA97BB003A2377 /* PresentingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C30AA8827AA97BB003A2377 /* PresentingViewController.swift */; };
+		2C346BBE27AAB3A4003E8DC4 /* AppIcon.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2C346BBD27AAB3A4003E8DC4 /* AppIcon.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		2C0AFE9827AA9C03008AF77C /* PresentedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentedViewController.swift; sourceTree = "<group>"; };
-		2C196E3227AA9521002F7113 /* CardTransitionClient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CardTransitionClient.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		2C196E3227AA9521002F7113 /* Client.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Client.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C196E4927AA9573002F7113 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		2C196E4B27AA95AA002F7113 /* Application.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Application.swift; sourceTree = "<group>"; };
 		2C30AA8827AA97BB003A2377 /* PresentingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentingViewController.swift; sourceTree = "<group>"; };
 		2C30AA8B27AA982C003A2377 /* CardTransition */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = CardTransition; path = ..; sourceTree = "<group>"; };
+		2C346BBD27AAB3A4003E8DC4 /* AppIcon.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = AppIcon.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -48,7 +50,7 @@
 			isa = PBXGroup;
 			children = (
 				2C30AA8A27AA982C003A2377 /* Packages */,
-				2C196E3427AA9521002F7113 /* CardTransitionClient */,
+				2C196E3427AA9521002F7113 /* Client */,
 				2C196E3327AA9521002F7113 /* Products */,
 				2C0AFE9027AA9872008AF77C /* Frameworks */,
 			);
@@ -57,20 +59,21 @@
 		2C196E3327AA9521002F7113 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				2C196E3227AA9521002F7113 /* CardTransitionClient.app */,
+				2C196E3227AA9521002F7113 /* Client.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		2C196E3427AA9521002F7113 /* CardTransitionClient */ = {
+		2C196E3427AA9521002F7113 /* Client */ = {
 			isa = PBXGroup;
 			children = (
+				2C346BBD27AAB3A4003E8DC4 /* AppIcon.xcassets */,
 				2C196E4B27AA95AA002F7113 /* Application.swift */,
 				2C196E4927AA9573002F7113 /* main.swift */,
 				2C0AFE9827AA9C03008AF77C /* PresentedViewController.swift */,
 				2C30AA8827AA97BB003A2377 /* PresentingViewController.swift */,
 			);
-			path = CardTransitionClient;
+			path = Client;
 			sourceTree = "<group>";
 		};
 		2C30AA8A27AA982C003A2377 /* Packages */ = {
@@ -84,9 +87,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		2C196E3127AA9521002F7113 /* CardTransitionClient */ = {
+		2C196E3127AA9521002F7113 /* Client */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 2C196E4627AA9522002F7113 /* Build configuration list for PBXNativeTarget "CardTransitionClient" */;
+			buildConfigurationList = 2C196E4627AA9522002F7113 /* Build configuration list for PBXNativeTarget "Client" */;
 			buildPhases = (
 				2C196E2E27AA9521002F7113 /* Sources */,
 				2C196E2F27AA9521002F7113 /* Frameworks */,
@@ -96,13 +99,13 @@
 			);
 			dependencies = (
 			);
-			name = CardTransitionClient;
+			name = Client;
 			packageProductDependencies = (
 				2C0AFE9127AA9872008AF77C /* CardTransition */,
 				2C0AFE9427AA98B7008AF77C /* CoreUI */,
 			);
-			productName = CardTransitionClient;
-			productReference = 2C196E3227AA9521002F7113 /* CardTransitionClient.app */;
+			productName = Client;
+			productReference = 2C196E3227AA9521002F7113 /* Client.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -120,7 +123,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 2C196E2D27AA9521002F7113 /* Build configuration list for PBXProject "CardTransitionClient" */;
+			buildConfigurationList = 2C196E2D27AA9521002F7113 /* Build configuration list for PBXProject "Client" */;
 			compatibilityVersion = "Xcode 13.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -136,7 +139,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				2C196E3127AA9521002F7113 /* CardTransitionClient */,
+				2C196E3127AA9521002F7113 /* Client */,
 			);
 		};
 /* End PBXProject section */
@@ -146,6 +149,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2C346BBE27AAB3A4003E8DC4 /* AppIcon.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -285,12 +289,13 @@
 		2C196E4727AA9522002F7113 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = CardTransitionClient/Info.plist;
+				INFOPLIST_FILE = Client/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -302,7 +307,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.kulikovia.CardTransitionClient;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.kulikovia.client.card-transition";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -313,12 +318,13 @@
 		2C196E4827AA9522002F7113 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = CardTransitionClient/Info.plist;
+				INFOPLIST_FILE = Client/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -330,7 +336,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.kulikovia.CardTransitionClient;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.kulikovia.client.card-transition";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -341,7 +347,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		2C196E2D27AA9521002F7113 /* Build configuration list for PBXProject "CardTransitionClient" */ = {
+		2C196E2D27AA9521002F7113 /* Build configuration list for PBXProject "Client" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2C196E4427AA9522002F7113 /* Debug */,
@@ -350,7 +356,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		2C196E4627AA9522002F7113 /* Build configuration list for PBXNativeTarget "CardTransitionClient" */ = {
+		2C196E4627AA9522002F7113 /* Build configuration list for PBXNativeTarget "Client" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2C196E4727AA9522002F7113 /* Debug */,
