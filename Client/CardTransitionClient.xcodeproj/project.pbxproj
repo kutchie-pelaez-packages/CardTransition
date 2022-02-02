@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		2C0AFE9227AA9872008AF77C /* CardTransition in Frameworks */ = {isa = PBXBuildFile; productRef = 2C0AFE9127AA9872008AF77C /* CardTransition */; };
 		2C0AFE9527AA98B7008AF77C /* CoreUI in Frameworks */ = {isa = PBXBuildFile; productRef = 2C0AFE9427AA98B7008AF77C /* CoreUI */; };
-		2C0AFE9727AA9BBD008AF77C /* CardTransitioningDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0AFE9627AA9BBD008AF77C /* CardTransitioningDelegate.swift */; };
 		2C0AFE9927AA9C03008AF77C /* PresentedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0AFE9827AA9C03008AF77C /* PresentedViewController.swift */; };
 		2C196E4A27AA9573002F7113 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C196E4927AA9573002F7113 /* main.swift */; };
 		2C196E4C27AA95AA002F7113 /* Application.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C196E4B27AA95AA002F7113 /* Application.swift */; };
@@ -17,7 +16,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		2C0AFE9627AA9BBD008AF77C /* CardTransitioningDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardTransitioningDelegate.swift; sourceTree = "<group>"; };
 		2C0AFE9827AA9C03008AF77C /* PresentedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentedViewController.swift; sourceTree = "<group>"; };
 		2C196E3227AA9521002F7113 /* CardTransitionClient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CardTransitionClient.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C196E4927AA9573002F7113 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
@@ -68,7 +66,6 @@
 			isa = PBXGroup;
 			children = (
 				2C196E4B27AA95AA002F7113 /* Application.swift */,
-				2C0AFE9627AA9BBD008AF77C /* CardTransitioningDelegate.swift */,
 				2C196E4927AA9573002F7113 /* main.swift */,
 				2C0AFE9827AA9C03008AF77C /* PresentedViewController.swift */,
 				2C30AA8827AA97BB003A2377 /* PresentingViewController.swift */,
@@ -159,7 +156,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2C0AFE9727AA9BBD008AF77C /* CardTransitioningDelegate.swift in Sources */,
 				2C196E4C27AA95AA002F7113 /* Application.swift in Sources */,
 				2C196E4A27AA9573002F7113 /* main.swift in Sources */,
 				2C0AFE9927AA9C03008AF77C /* PresentedViewController.swift in Sources */,

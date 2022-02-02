@@ -1,3 +1,4 @@
+import CardTransition
 import CoreUI
 import UIKit
 
