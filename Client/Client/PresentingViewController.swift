@@ -22,11 +22,11 @@ final class PresentingViewController: ViewController {
     private var presentButton: UIButton!
 
     override func configureViews() {
-        view.backgroundColor = SystemColors.Background.primary
+        view.backgroundColor = System.Colors.Background.primary
 
         presentButton = UIButton()
         presentButton.setTitle("Present", for: .normal)
-        presentButton.setTitleColor(SystemColors.Tint.primary, for: .normal)
+        presentButton.setTitleColor(System.Colors.Tint.primary, for: .normal)
         presentButton.addAction { [weak self] in
             self?.presentCard()
         }

@@ -12,23 +12,23 @@ final class PresentedViewController: ViewController, CardPresentationControllerD
 
     override func configureViews() {
         rectangle = UIView()
-        rectangle.backgroundColor = SystemColors.Tint.primary
+        rectangle.backgroundColor = System.Colors.Tint.primary
         view.addSubviews(rectangle)
 
         leadingInsetIndicator = UIView()
-        leadingInsetIndicator.backgroundColor = SystemColors.Tint.red
+        leadingInsetIndicator.backgroundColor = System.Colors.Tint.red
         view.addSubviews(leadingInsetIndicator)
 
         trailingInsetIndicator = UIView()
-        trailingInsetIndicator.backgroundColor = SystemColors.Tint.red
+        trailingInsetIndicator.backgroundColor = System.Colors.Tint.red
         view.addSubviews(trailingInsetIndicator)
 
         topInsetIndicator = UIView()
-        topInsetIndicator.backgroundColor = SystemColors.Tint.red
+        topInsetIndicator.backgroundColor = System.Colors.Tint.red
         view.addSubviews(topInsetIndicator)
 
         bottomInsetIndicator = UIView()
-        bottomInsetIndicator.backgroundColor = SystemColors.Tint.red
+        bottomInsetIndicator.backgroundColor = System.Colors.Tint.red
         view.addSubviews(bottomInsetIndicator)
     }
 

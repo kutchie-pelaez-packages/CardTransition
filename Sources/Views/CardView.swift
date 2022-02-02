@@ -50,15 +50,15 @@ final class CardView: View {
     override func configureViews() {
         clipsToBounds = true
         backgroundColor = UIColor(
-            light: SystemColors.Background.primary.light.hex,
-            dark: SystemColors.Background.secondary.dark.hex
+            light: System.Colors.Background.primary.light.hex,
+            dark: System.Colors.Background.secondary.dark.hex
         )
         #warning("Apply different cornerRadius based on device")
         layer.cornerRadius = Device.current.cornerRadius.clamped(13...)
 
         titleLabel = UILabel(
-            font: SystemFonts.bold(30),
-            textColor: SystemColors.Label.primary,
+            font: System.Fonts.bold(30),
+            textColor: System.Colors.Label.primary,
             numberOfLines: 0,
             textAlignment: .natural
         )

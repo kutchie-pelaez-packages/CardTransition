@@ -21,7 +21,7 @@ final class CardCloseButton: Button {
     override func makeConfiguration() -> UIButton.Configuration? {
         var configuration = Configuration.plain()
         configuration.image = Symbols.xmarkCircleFill
-            .font(SystemFonts.medium(17.5))
+            .font(System.Fonts.medium(17.5))
             .palette(
                 primary: UIColor(light: 0x47474DA3, dark: 0xE8E8F2B0),
                 secondary: UIColor(light: 0x73737B1F, dark: 0x75757D3D)
