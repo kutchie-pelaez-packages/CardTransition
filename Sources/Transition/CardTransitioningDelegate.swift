@@ -1,10 +1,6 @@
 import UIKit
 
-public final class CardTransitioningDelegate:
-    NSObject,
-    UIViewControllerTransitioningDelegate
-{
-
+public final class CardTransitioningDelegate: NSObject, UIViewControllerTransitioningDelegate {
     private let presentingAnimator = CardAnimator(direction: .presenting)
     private let dismissingAnimator = CardAnimator(direction: .dismissing)
     private let dismissingInteractiveAnimator = CardDismissingInteractiveAnimator()

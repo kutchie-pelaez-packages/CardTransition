@@ -4,11 +4,7 @@ import UIKit
 private var presentingDuration: TimeInterval { .milliseconds(225) }
 private var dismissingDuration: TimeInterval { .milliseconds(200) }
 
-public final class CardAnimator:
-    NSObject,
-    UIViewControllerAnimatedTransitioning
-{
-
+public final class CardAnimator: NSObject, UIViewControllerAnimatedTransitioning {
     public init(direction: CardTransitionDirection) {
         self.direction = direction
         super.init()

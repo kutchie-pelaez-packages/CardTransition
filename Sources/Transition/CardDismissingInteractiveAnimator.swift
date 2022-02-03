@@ -3,11 +3,7 @@ import UIKit
 private let velocityThreshold: Double = 300
 private let percentCompleteThreshold: Double = 0.5
 
-public final class CardDismissingInteractiveAnimator:
-    UIPercentDrivenInteractiveTransition,
-    UIScrollViewDelegate
-{
-
+public final class CardDismissingInteractiveAnimator: UIPercentDrivenInteractiveTransition, UIScrollViewDelegate {
     private var transitionContext: UIViewControllerContextTransitioning?
 
     weak var presentationController: CardPresentationController?

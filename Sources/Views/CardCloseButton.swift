@@ -4,7 +4,7 @@ import UIKit
 private let verticalContentInsets: Double = 11.5
 private let horizontalContentInsets: Double = 8.5
 
-private enum Symbols: Symbol {
+private enum Symbols: SymbolsCollection {
     case xmarkCircleFill
 }
 
