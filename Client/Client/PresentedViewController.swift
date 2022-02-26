@@ -3,7 +3,11 @@ import CoreUI
 import Core
 import UIKit
 
-final class PresentedViewController: ViewController, CardPresentationControllerDelegate {
+final class PresentedViewController:
+    ViewController,
+    CardPresentationControllerDataSource,
+    CardPresentationControllerDelegate
+{
     private var rectangle: UIView!
     private var leadingInsetIndicator: UIView!
     private var trailingInsetIndicator: UIView!
@@ -35,21 +39,22 @@ final class PresentedViewController: ViewController, CardPresentationControllerD
     override func constraintViews() {
         rectangle.snp.makeConstraints { make in
             make.height.equalTo(rectangle.snp.width)
-            make.top.bottom.equalToSuperview().inset(16)
-            make.leading.trailing.equalToSuperview().inset(32)
+            make.top.equalToSuperview().inset(16)
+            make.bottom.equalTo(view.safeAreaLayoutGuide).inset(16)
+            make.leading.trailing.equalToSuperview().inset(16)
         }
 
         leadingInsetIndicator.snp.makeConstraints { make in
             make.leading.equalToSuperview()
             make.centerY.equalTo(rectangle)
-            make.width.equalTo(32)
+            make.width.equalTo(16)
             make.height.equalTo(1)
         }
 
         trailingInsetIndicator.snp.makeConstraints { make in
             make.trailing.equalToSuperview()
             make.centerY.equalTo(rectangle)
-            make.width.equalTo(32)
+            make.width.equalTo(16)
             make.height.equalTo(1)
         }
 
@@ -62,9 +67,9 @@ final class PresentedViewController: ViewController, CardPresentationControllerD
 
         bottomInsetIndicator.snp.makeConstraints { make in
             make.bottom.equalToSuperview()
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.bottom).inset(16)
             make.centerX.equalTo(rectangle)
             make.width.equalTo(1)
-            make.height.equalTo(16)
         }
     }
 
@@ -77,14 +82,16 @@ final class PresentedViewController: ViewController, CardPresentationControllerD
         )
     }
 
-    // MARK: - CardPresentationControllerDelegate
+    // MARK: - CardPresentationControllerDataSource
 
-    func cardPresentationControllerTitle(_ cardPresentationController: CardPresentationController) -> String? {
+    func title(for cardPresentationController: CardPresentationController) -> String? {
         "Card Title"
     }
 
-    func cardPresentationController(_ cardPresentationController: CardPresentationController, shouldDismissBy reason: CardDismissingReason) -> Bool {
-        switch reason {
+    // MARK: - CardPresentationControllerDelegate
+
+    func cardPresentationController(_ cardPresentationController: CardPresentationController, shouldDismissBy dismissingReason: CardDismissingReason) -> Bool {
+        switch dismissingReason {
         case .closeButton:
             return true
 
@@ -93,8 +100,8 @@ final class PresentedViewController: ViewController, CardPresentationControllerD
         }
     }
 
-    func cardPresentationController(_ cardPresentationController: CardPresentationController, didDismissBy reason: CardDismissingReason) {
-        switch reason {
+    func cardPresentationController(_ cardPresentationController: CardPresentationController, didDismissBy dismissingReason: CardDismissingReason) {
+        switch dismissingReason {
         case .closeButton:
             print("Will close by button")
 

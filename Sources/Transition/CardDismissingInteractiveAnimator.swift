@@ -1,33 +1,20 @@
+import CoreUI
 import UIKit
 
-private let velocityThreshold: Double = 300
-private let percentCompleteThreshold: Double = 0.5
-
-public final class CardDismissingInteractiveAnimator: UIPercentDrivenInteractiveTransition, UIScrollViewDelegate {
-    private var transitionContext: UIViewControllerContextTransitioning?
-
-    weak var presentationController: CardPresentationController?
+public final class CardDismissingInteractiveAnimator: UIPercentDrivenInteractiveTransition {
+    weak var presentationController: CardPresentationController!
     weak var presentingViewController: UIViewController?
     weak var presentedViewController: UIViewController?
 
-    weak var scrollView: UIScrollView? {
+    private var transitionContext: UIViewControllerContextTransitioning?
+    private weak var panGestureRecognizer: UIPanGestureRecognizer?
+
+    var card: UIView? {
         didSet {
-            panGesture?.addAction { [weak self] in
-                guard let panGesture = self?.panGesture else { return }
+            guard let card = card else { return }
 
-                self?.handleDismissingPanGesture(panGesture)
-            }
+            addGesturesIfNeeded(for: card)
         }
-    }
-
-    private var card: UIView? {
-        scrollView?.subviews.last?.subviews.first
-    }
-
-    private var panGesture: UIPanGestureRecognizer? {
-        scrollView?.gestureRecognizers?
-            .compactMap { $0 as? UIPanGestureRecognizer }
-            .first
     }
 
     private var cardPresentationControllerDelegate: CardPresentationControllerDelegate? {
@@ -36,50 +23,45 @@ public final class CardDismissingInteractiveAnimator: UIPercentDrivenInteractive
 
     // MARK: -
 
-    private func handleDismissingPanGesture(_ pan: UIPanGestureRecognizer) {
-        guard
-            let scrollView = scrollView,
-            let card = card,
-            let presentationController = presentationController,
-            cardPresentationControllerDelegate?.cardPresentationController(
-                presentationController,
-                shouldDismissBy: .gesture
-            ) == true
-        else {
-            return
-        }
+    private var canDismissByGesture: Bool {
+        cardPresentationControllerDelegate?.cardPresentationController(
+            presentationController,
+            shouldDismissBy: .gesture
+        ) == true
+    }
 
-        let translation = pan.translation(in: scrollView).y
-        let velocity = pan.velocity(in: scrollView).y
+    private func addGesturesIfNeeded(for card: UIView) {
+        let panGestureRecognizer = UIPanGestureRecognizer()
+        panGestureRecognizer.addAction { [unowned self, unowned panGestureRecognizer, unowned card] in
+            self.handleDismissingPanGesture(gesture: panGestureRecognizer, card: card)
+        }
+        card.addGestureRecognizer(panGestureRecognizer)
+
+        self.panGestureRecognizer = panGestureRecognizer
+    }
+
+    private func handleDismissingPanGesture(gesture: UIPanGestureRecognizer, card: UIView) {
+        let translation = gesture.translation(in: card).y
+        let velocity = gesture.velocity(in: card).y
 
         let cardHeight = card.frame.height
-        let maxTranslation = cardHeight + cardEdgeInset
-        let offset = scrollView.contentOffset.y
-        let percentTranslated = translation / maxTranslation
+        let percentTranslated = translation / cardHeight
 
-        switch pan.state {
+        switch gesture.state {
         case .began:
             pause()
-
-            pan.setTranslation(
-                CGPoint(
-                    x: .zero,
-                    y: offset
-                ),
-                in: scrollView
-            )
 
             if percentComplete == .zero  {
                 presentedViewController?.dismiss(animated: true) { [weak self] in
                     guard
-                        self?.transitionContext?.transitionWasCancelled == false,
-                        let presentationController = self?.presentationController
+                        let self = self,
+                        self.transitionContext?.transitionWasCancelled == false
                     else {
                         return
                     }
 
-                    self?.cardPresentationControllerDelegate?.cardPresentationController(
-                        presentationController,
+                    self.cardPresentationControllerDelegate?.cardPresentationController(
+                        self.presentationController,
                         didDismissBy: .gesture
                     )
                 }
@@ -87,22 +69,34 @@ public final class CardDismissingInteractiveAnimator: UIPercentDrivenInteractive
 
         case .changed:
             if translation > .zero {
-                scrollView.contentOffset = .zero
                 update(percentTranslated)
+            } else if translation < .zero {
+                card.transform = CGAffineTransform(
+                    translationX: .zero,
+                    y: -pow(-translation, 0.8) + cardHeight
+                )
             } else {
                 update(.zero)
             }
 
         case .ended, .cancelled:
-            if velocity <= -velocityThreshold {
-                cancel()
-            } else if
-                velocity >= velocityThreshold ||
-                percentComplete >= percentCompleteThreshold
+            if
+                canDismissByGesture &&
+                (velocity >= CardTransitionConstants.Misc.velocityThreshold ||
+                percentComplete >= CardTransitionConstants.Misc.percentCompleteThreshold)
             {
                 finish()
             } else {
-                cancel()
+                if translation >= .zero {
+                    cancel()
+                } else {
+                    animation(duration: CardTransitionConstants.Timings.returning) {
+                        self.card?.transform = CGAffineTransform(
+                            translationX: .zero,
+                            y: cardHeight
+                        )
+                    }
+                }
             }
 
         case .failed:
@@ -116,34 +110,13 @@ public final class CardDismissingInteractiveAnimator: UIPercentDrivenInteractive
         }
     }
 
-    // MARK: - UIScrollViewDelegate
-
-    public func scrollViewShouldScrollToTop(_ scrollView: UIScrollView) -> Bool { false }
-
-    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        guard
-            let presentationController = presentationController,
-            cardPresentationControllerDelegate?.cardPresentationController(
-                presentationController,
-                shouldDismissBy: .gesture
-            ) == true
-        else {
-            return
-        }
-        
-        if scrollView.contentOffset.y < .zero {
-            scrollView.contentOffset.y = .zero
-        }
-    }
-
     // MARK: - UIViewControllerInteractiveTransitioning
 
     public override var wantsInteractiveStart: Bool {
         get {
-            panGesture?.state == .began
+            panGestureRecognizer?.state == .began
         } set { }
     }
-
 
     public override func startInteractiveTransition(_ transitionContext: UIViewControllerContextTransitioning) {
         self.transitionContext = transitionContext

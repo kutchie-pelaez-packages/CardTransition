@@ -1,9 +1,6 @@
 import Core
 import UIKit
 
-private var presentingDuration: TimeInterval { .milliseconds(225) }
-private var dismissingDuration: TimeInterval { .milliseconds(200) }
-
 public final class CardAnimator: NSObject, UIViewControllerAnimatedTransitioning {
     public init(direction: CardTransitionDirection) {
         self.direction = direction
@@ -42,7 +39,7 @@ public final class CardAnimator: NSObject, UIViewControllerAnimatedTransitioning
                 case .dismissing:
                     presentedView.transform = CGAffineTransform(
                         translationX: 0,
-                        y: presentedView.frame.height + cardEdgeInset
+                        y: presentedView.frame.height
                     )
                 }
             }
@@ -59,10 +56,10 @@ public final class CardAnimator: NSObject, UIViewControllerAnimatedTransitioning
     public func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         switch direction {
         case .presenting:
-            return presentingDuration
+            return CardTransitionConstants.Timings.presenting
 
         case .dismissing:
-            return dismissingDuration
+            return CardTransitionConstants.Timings.dismissing
         }
     }
 

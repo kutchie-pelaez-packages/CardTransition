@@ -1,60 +1,83 @@
 import Core
 import CoreUI
-import DeviceKit
 import SnapKit
 import UIKit
 
-private let titleLeadingInset: Double = 36
-private let titleTopInset: Double = 28
-private let labelToCloseButtonInset: Double = 8
-private let labelToContentViewInset: Double = 8
-
-private func closeButtonEdgeInset(for style: CardView.Style) -> Double {
-    switch style {
-    case .default:
-        return 2
-
-    case .large:
-        return 10
-    }
-}
-
 final class CardView: View {
-    enum Style {
-        case `default`
-        case large
+    private enum ContentType {
+        case titleWithCloseButton
+        case onlyTitle
+        case onlyCloseButton
+        case none
     }
 
     init(
-        style: Style,
-        presentationController: CardPresentationController?,
-        cardPresentationControllerDelegate: CardPresentationControllerDelegate?
+        presentationController: CardPresentationController,
+        dataSource: CardPresentationControllerDataSource?,
+        delegate: CardPresentationControllerDelegate?
     ) {
-        self.style = style
         self.presentationController = presentationController
-        self.cardPresentationControllerDelegate = cardPresentationControllerDelegate
+        self.dataSource = dataSource
+        self.delegate = delegate
         super.init()
     }
 
-    private let style: Style
-    private weak var presentationController: CardPresentationController?
-    private weak var cardPresentationControllerDelegate: CardPresentationControllerDelegate?
+    private unowned let presentationController: CardPresentationController
+    private unowned let dataSource: CardPresentationControllerDataSource?
+    private unowned let delegate: CardPresentationControllerDelegate?
+
+    private var title: String? {
+        dataSource?.title(
+            for: presentationController
+        )
+    }
+
+    private var hasTitle: Bool {
+        title.isNotNil == true
+    }
+
+    private var canCloseByButton: Bool {
+        delegate?.cardPresentationController(
+            presentationController,
+            shouldDismissBy: .closeButton
+        ) == true
+    }
+
+    private var contentType: ContentType {
+        if hasTitle && canCloseByButton {
+            return .titleWithCloseButton
+        } else if hasTitle {
+            return .onlyTitle
+        } else if canCloseByButton {
+            return .onlyCloseButton
+        } else {
+            return .none
+        }
+    }
 
     // MARK: - UI
 
+    private var backgroundView: UIView!
+    private var contentView: UIView!
     private var titleLabel: UILabel!
     private var closeButton: UIButton!
-    private var contentView: UIView!
-    private var contentTopConstraint: Constraint?
 
     override func configureViews() {
-        clipsToBounds = true
-        backgroundColor = UIColor(
+        backgroundView = UIView()
+        backgroundView.clipsToBounds = true
+        backgroundView.layer.cornerRadius = CardTransitionConstants.Misc.cornerRadius
+        backgroundView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        backgroundView.backgroundColor = UIColor(
             light: System.Colors.Background.primary.light.hex,
             dark: System.Colors.Background.secondary.dark.hex
         )
-        #warning("Apply different cornerRadius based on device")
-        layer.cornerRadius = Device.current.cornerRadius.clamped(13...)
+        super.addSubview(backgroundView)
+
+        contentView = UIView()
+        super.addSubview(contentView)
+
+        contentView = UIView()
+        super.addSubview(contentView)
 
         titleLabel = UILabel(
             font: System.Fonts.bold(30),
@@ -62,90 +85,73 @@ final class CardView: View {
             numberOfLines: 0,
             textAlignment: .natural
         )
+        titleLabel.text = title
+        titleLabel.isVisible = hasTitle
         super.addSubview(titleLabel)
 
-        closeButton = CardCloseButton(style: style)
-        closeButton.setContentCompressionResistancePriority(.required, for: .horizontal)
+        closeButton = System.CloseButton()
         closeButton.addAction { [weak self] in
             guard let presentationController = self?.presentationController else { return }
 
-            self?.cardPresentationControllerDelegate?.cardPresentationController(
+            self?.delegate?.cardPresentationController(
                 presentationController,
                 didDismissBy: .closeButton
             )
         }
+        closeButton.isVisible = canCloseByButton
         super.addSubview(closeButton)
-
-        contentView = UIView()
-        super.addSubview(contentView)
-
-        setCardContent()
-    }
-
-    private func setCardContent() {
-        guard let presentationController = presentationController else { return }
-
-        let title = cardPresentationControllerDelegate?.cardPresentationControllerTitle(presentationController)
-        titleLabel.text = title
-        titleLabel.isVisible = title.isNotNil
-
-        closeButton.isVisible = cardPresentationControllerDelegate?.cardPresentationController(
-            presentationController,
-            shouldDismissBy: .closeButton
-        ) == true
     }
 
     override func constraintViews() {
-        contentTopConstraint?.deactivate()
-
-        if
-            let presentationController = presentationController,
-            cardPresentationControllerDelegate?.cardPresentationController(
-                presentationController,
-                shouldDismissBy: .closeButton
-            ) == true &&
-            cardPresentationControllerDelegate?.cardPresentationControllerTitle(
-                presentationController
-            ).isNotNil == true
-        {
+        switch contentType {
+        case .titleWithCloseButton:
             titleLabel.snp.remakeConstraints { make in
-                make.leading.equalToSuperview().inset(titleLeadingInset)
-                make.top.equalToSuperview().inset(titleTopInset)
+                make.leading.equalToSuperview().inset(CardTransitionConstants.Insets.titleWithCloseButton.left)
+                make.top.equalToSuperview().inset(CardTransitionConstants.Insets.titleWithCloseButton.top)
             }
 
             closeButton.snp.remakeConstraints { make in
-                make.top.trailing.equalToSuperview().inset(closeButtonEdgeInset(for: style))
-                make.leading.greaterThanOrEqualTo(titleLabel.snp.trailing).inset(-labelToCloseButtonInset)
+                make.top.equalToSuperview().inset(CardTransitionConstants.Insets.closeButtonWithTitle.top)
+                make.trailing.equalToSuperview().inset(CardTransitionConstants.Insets.closeButtonWithTitle.right)
+                make.leading.greaterThanOrEqualTo(titleLabel.snp.trailing).inset(-CardTransitionConstants.Insets.titleWithCloseButton.right)
             }
 
             contentView.snp.remakeConstraints { make in
                 make.leading.trailing.bottom.equalToSuperview()
-                contentTopConstraint = make.top.equalTo(titleLabel.snp.bottom).inset(-labelToContentViewInset).constraint
+                make.top.equalTo(titleLabel.snp.bottom).inset(-CardTransitionConstants.Insets.titleWithCloseButton.bottom)
             }
-        } else if
-            let presentationController = presentationController,
-            cardPresentationControllerDelegate?.cardPresentationControllerTitle(
-                presentationController
-            ).isNotNil == true
-        {
+
+        case .onlyTitle:
             titleLabel.snp.remakeConstraints { make in
-                make.leading.trailing.equalToSuperview().inset(titleLeadingInset)
-                make.top.equalToSuperview().inset(titleTopInset)
+                make.leading.equalToSuperview().inset(CardTransitionConstants.Insets.titleWithoutCloseButton.left)
+                make.trailing.equalToSuperview().inset(CardTransitionConstants.Insets.titleWithoutCloseButton.right)
+                make.top.equalToSuperview().inset(CardTransitionConstants.Insets.titleWithoutCloseButton.top)
             }
 
             contentView.snp.remakeConstraints { make in
                 make.leading.trailing.bottom.equalToSuperview()
-                contentTopConstraint = make.top.equalTo(titleLabel.snp.bottom).inset(-labelToContentViewInset).constraint
+                make.top.equalTo(titleLabel.snp.bottom).inset(-CardTransitionConstants.Insets.titleWithoutCloseButton.bottom)
             }
-        } else {
+
+        case .onlyCloseButton:
             closeButton.snp.remakeConstraints { make in
-                make.top.trailing.equalToSuperview().inset(closeButtonEdgeInset(for: style))
+                make.top.equalToSuperview().inset(CardTransitionConstants.Insets.closeButtonWithoutTitle.top)
+                make.trailing.equalToSuperview().inset(CardTransitionConstants.Insets.closeButtonWithoutTitle.right)
             }
 
             contentView.snp.remakeConstraints { make in
-                make.leading.trailing.bottom.equalToSuperview()
-                contentTopConstraint = make.top.equalToSuperview().constraint
+                make.directionalEdges.equalToSuperview()
             }
+
+        case .none:
+            contentView.snp.remakeConstraints { make in
+                make.directionalEdges.equalToSuperview()
+            }
+        }
+
+        backgroundView.snp.makeConstraints { make in
+            make.top.leading.trailing.equalToSuperview()
+            make.bottom.equalTo(contentView).inset(-1000)
         }
     }
 
