@@ -64,13 +64,9 @@ public final class CardPresentationController: UIPresentationController {
 
     // MARK: -
 
-    private var subjectView: UIView? {
-        presentedViewController.view
-    }
+    private var subjectView: UIView? { presentedViewController.view }
 
-    private var provider: CardTransitionProvider? {
-        presentedViewController as? CardTransitionProvider
-    }
+    private var provider: CardTransitionProvider? { presentedViewController as? CardTransitionProvider }
 
     private var dataSource: CardPresentationControllerDataSource? {
         if let provider = provider {

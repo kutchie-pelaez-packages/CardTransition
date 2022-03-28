@@ -99,23 +99,17 @@ public final class CardDismissingInteractiveAnimator: UIPercentDrivenInteractive
                 }
             }
 
-        case .failed:
-            cancel()
-
-        case .possible:
-            break
-
-         @unknown default:
-            break
+        case .failed: cancel()
+        case .possible: break
+         @unknown default: break
         }
     }
 
     // MARK: - UIViewControllerInteractiveTransitioning
 
     public override var wantsInteractiveStart: Bool {
-        get {
-            panGestureRecognizer?.state == .began
-        } set { }
+        get { panGestureRecognizer?.state == .began }
+        set { }
     }
 
     public override func startInteractiveTransition(_ transitionContext: UIViewControllerContextTransitioning) {

@@ -26,15 +26,8 @@ final class CardView: View {
     private unowned let dataSource: CardPresentationControllerDataSource?
     private unowned let delegate: CardPresentationControllerDelegate?
 
-    private var title: String? {
-        dataSource?.title(
-            for: presentationController
-        )
-    }
-
-    private var hasTitle: Bool {
-        title.isNotNil == true
-    }
+    private var title: String? { dataSource?.title(for: presentationController) }
+    private var hasTitle: Bool { title.isNotNil }
 
     private var canCloseByButton: Bool {
         delegate?.cardPresentationController(
